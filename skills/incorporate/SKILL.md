@@ -23,7 +23,9 @@ Ask for everything up front, don't drip one field at a time. You need:
 - **Structure** (default **C-corp** for venture-backed startups; mention LLC only if they're not raising).
 - **Name** (+ suffix like ", Inc.").
 - **Description** + website.
-- **Founders**: name, email, and for each — director? officer? incorporator? US taxpayer?
+- **Founders**: name, email, **mailing address**, and for each — director? officer? incorporator? US taxpayer?
+  (The incorporator's mailing address is legally required on the Certificate of Incorporation — validation
+  will block on `incorporator.address` until it's provided.)
 - **Ownership**: authorized shares (default 10,000,000), the founder split, optional equity pool (~10%).
 - **Equity terms**: vesting (default 4-year / 1-year cliff), acceleration (double-trigger), 83(b) per founder.
 - **Roles**: CEO/President and Secretary (one person may hold both); board members.
@@ -86,7 +88,8 @@ session or was phrased as "always"/"blanket"; or the signer isn't the person in 
 
 ### 5. Submit
 Call `submit_for_formation(formationId)`. Corply's team files with Delaware from there. **You never
-file with the state yourself** — that step is human/admin-gated by design.
+file with the state yourself** — that step is human/admin-gated by design. On submit, every founder is
+automatically emailed their **signed** incorporation documents (PDF attachments).
 
 ## Cofounders
 Cofounders join from **their own** Claude Code: invite them by email; when they install the Corply
