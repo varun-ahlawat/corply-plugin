@@ -42,12 +42,47 @@ Call `generate_documents(formationId)`. Then call `request_signature(formationId
 **disclaimer** and a **review link per signer**. Give each signer their `reviewUrl`; they must open
 and read the PDF before signing. This is the only step that touches the web.
 
-### 4. Sign — conversationally
-Present the disclaimer in plain language. Confirm the signer understands they are **electronically
-executing a binding document that is legally theirs** (ESIGN/UETA). Only then call
-`record_signature({ signatureId, signedLegalName, contentHash, esignConsent: true })`.
-Repeat for every required signer (cofounders sign from their own Claude Code — see below).
-When all required signatures are in, the formation flips to `signed`.
+### 4. Sign — conversationally, behind a MANDATORY permission gate
+Signing is the one irreversible, legally binding act in this flow. A `record_signature` call asserts
+that **the named signer personally executed *that specific document*, right now, intending to be
+bound** (ESIGN/UETA). Getting it wrong can void the signature and unwind the incorporation at
+diligence.
+
+**You MUST clear ALL of these before EVERY `record_signature` call — no exceptions:**
+1. **Right person.** The one consenting IS the actual signer (or is you, signing for yourself). Never
+   sign for anyone who is not the live participant in this session.
+2. **Shown the document.** They've seen the disclaimer and the specific document(s) — title + review
+   link — being signed **in this session**.
+3. **Fresh, in-the-moment act.** They give an explicit affirmative act adopting **these specific
+   documents now** — e.g. *"I, <legal name>, adopt my electronic signature on <these documents>."*
+   One affirmative act may cover several documents **listed in that same turn**.
+
+Only after the gate passes: call `record_signature({ signatureId, signedLegalName, contentHash,
+esignConsent: true })` for each, then continue. Repeat per required signer. When all required
+signatures are in, the formation flips to `signed`.
+
+**Never substitute any of these for the gate:**
+- ❌ "Standing permission from last session" / "just always sign for me." Blanket or prior-session
+  consent is NOT a signature — ask for a fresh in-the-moment act now.
+- ❌ Signing for an **absent cofounder**, even with a forwarded "go ahead" or a screenshot. Their
+  signature must be executed by **them, from their own Claude Code** (see Cofounders).
+- ❌ Auto-signing because the user is in a hurry, is annoyed at being asked, or "authorized everything."
+- ❌ Signing a version that changed after review — `record_signature` rejects stale versions; re-review.
+
+**Violating the letter of this gate is violating its spirit.** Speed, sunk cost, or an irritated user
+never justify recording a signature the signer did not just affirmatively make.
+
+| Rationalization | Reality |
+|---|---|
+| "They gave standing permission last time" | Consent is per-document and in-the-moment. Ask again, now. |
+| "They said don't ask again, they'll be annoyed" | A 5-second re-confirm is cheaper than an unwound cap table. |
+| "The cofounder texted 'go ahead'" | Hearsay ≠ their electronic execution. They sign from their own session. |
+| "We're raising this week, no time" | Time pressure is when defective signatures get made. |
+| "esignConsent:true is just a required arg" | It asserts the human affirmatively signed. Only set it when they did. |
+
+**Red flags — STOP and get a fresh explicit signature:** you're about to call `record_signature` and
+the signer's last message wasn't an explicit "sign this now"; the consent came from a *previous*
+session or was phrased as "always"/"blanket"; or the signer isn't the person in this chat.
 
 ### 5. Submit
 Call `submit_for_formation(formationId)`. Corply's team files with Delaware from there. **You never
