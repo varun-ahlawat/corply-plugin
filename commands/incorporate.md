@@ -8,5 +8,7 @@ Invoke the `incorporate` skill and follow it: gather the application in one batc
 the best choices, then `save_application` → `validate_application` → `generate_documents` → hand over
 the review links → run the conversational signature → `submit_for_formation`.
 
-First call `get_status` to see whether a formation is already in progress and pick up where it left
-off. Always surface the not-a-law-firm disclaimer before any binding act.
+First call `whoami` — if it returns `pendingInvites`, offer the invite by name and join only on an
+explicit yes (see the skill's Cofounders section). Then call `get_status` to see whether a formation
+is already in progress and pick up where it left off. Always surface the not-a-law-firm disclaimer
+before any binding act.

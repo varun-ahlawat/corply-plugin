@@ -18,6 +18,11 @@ gather (batch) → save_application → validate_application → generate_docume
    → review (magic links) → request_signature → record_signature (×each signer) → submit_for_formation
 ```
 
+Around that flow: `whoami` at session start (who's signed in, plus `pendingInvites` — invites this
+user hasn't accepted yet), `get_status` for live progress (now includes per-signer status in
+`signers` and a `webDashboardUrl`), and the cofounder tools `invite_cofounders`, `redeem_invite`,
+and `nudge_signer` — see **Cofounders** below.
+
 ### 1. Gather — all at once, then advise
 Ask for everything up front, don't drip one field at a time. You need:
 - **Structure** (default **C-corp** for venture-backed startups; mention LLC only if they're not raising).
@@ -76,7 +81,8 @@ signatures are in, the formation flips to `signed`.
 - ❌ "Standing permission from last session" / "just always sign for me." Blanket or prior-session
   consent is NOT a signature — ask for a fresh in-the-moment act now.
 - ❌ Signing for an **absent cofounder**, even with a forwarded "go ahead" or a screenshot. Their
-  signature must be executed by **them, from their own Claude Code** (see Cofounders).
+  signature must be executed by **them** — from their own Claude Code or their web sign link
+  (see Cofounders).
 - ❌ Auto-signing because the user is in a hurry, is annoyed at being asked, or "authorized everything."
 - ❌ Signing a version that changed after review — `record_signature` rejects stale versions; re-review.
 
@@ -101,11 +107,35 @@ file with the state yourself** — that step is human/admin-gated by design. On 
 automatically emailed their **signed** incorporation documents (PDF attachments).
 
 ## Cofounders
-Cofounders join from **their own** Claude Code: invite them by email; when they install the Corply
-plugin and sign in with that email, they land in the same organization automatically. `get_status`
-returns each signer **their own** pending signatures (with review links), plus who else is still
-outstanding — so a cofounder resuming later can pick up exactly what they need to sign. Multi-party
-signing is asynchronous — the formation completes once everyone has signed the current document version.
+Multi-party signing is asynchronous — the formation completes once everyone has signed the current
+document version. `get_status` returns each signer **their own** pending signatures (with review
+links), plus who else is still outstanding — so a cofounder resuming later can pick up exactly what
+they need to sign.
+
+### Inviting cofounders (lead)
+After `generate_documents`, when the lead asks to bring cofounders in ("invite my cofounders"),
+call `invite_cofounders(formationId)` **once**. Each other founder gets a single email with a web
+sign link plus instructions for joining from their own Claude Code. Report the result plainly: who
+was invited (and that a sign link went to their email), and who was skipped and why. **Never invite
+without the lead asking.** Re-running is safe — it's idempotent. Cofounders may sign on the web
+**or** through their own plugin; both are fine and run in parallel — nobody waits on anyone.
+
+### Cofounder welcome — confirm before joining
+You call `whoami` at session start. If `pendingInvites` is non-empty, greet gently and offer the
+invite by name: *"You've been invited to join {orgName} as a {role}. Want to join?"* Require an
+**explicit yes** before calling `redeem_invite(joinCode)` — never auto-join. If they already have
+an organization of their own, say clearly that joining **switches their active organization** (for
+this session). After joining, call `get_status` and offer next steps — typically their pending
+signatures. Every e-sign rule above applies unchanged: show each document, get fresh explicit
+consent, never sign for anyone else.
+
+### Signing progress + nudging (lead)
+`get_status` returns `signers: [{name, email, status: signed|pending}]`. When the lead asks how
+signing is going, summarize it plainly: *"You've signed; Bob is pending."* If the lead asks you to
+remind someone, call `nudge_signer(formationId, email)` with that cofounder's email — **never nudge
+unprompted**. When everyone has signed, remind the lead that `submit_for_formation` hands it to
+Corply for filing (still human-gated). Founders can also watch progress on the web via
+`get_status.webDashboardUrl`.
 
 **Each signer signs only their own documents.** `record_signature` enforces this server-side: a
 signer's Corply sign-in email must match the email on their founder record. You cannot sign for an
