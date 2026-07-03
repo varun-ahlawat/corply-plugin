@@ -34,9 +34,10 @@ Google; after that Claude Code is authorized into your organization.
 
 ## Who it's for
 
-- First-time founders who want a venture-ready structure without guessing.
-- International / non-U.S. cofounder teams incorporating a U.S. startup.
-- Technical founders who would rather run one command than fill out web portals.
+- Founders who want a venture-ready structure without guessing.
+- Technical founders who would rather run one command and chat to claude code than use web portals.
+- First-time founders who would have many questions and doesn't want to minimize paying attorney fees.
+- Teams with International / non-U.S. cofounder(s), incorporating in U.S.
 
 ## FAQ
 
