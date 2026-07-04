@@ -36,12 +36,16 @@ Advise actively: standard founder vesting, why a C-corp, equity-pool sizing. Kee
 todo list** of these steps and keep it in sync by calling `get_status`.
 
 ### 2. Save + validate
-Call `save_application(companyId, data)` — send the whole payload when you can, but incremental
-saves are safe too: they **deep-merge** over what's stored, so saving one more field never wipes
-the founders/ownership/roles you saved earlier. Then `validate_application(formationId)` — it returns
-what's missing and Delaware name availability. Fix gaps and re-validate until `ready`. (If the
-application later becomes incomplete, `validate_application` demotes it back out of `ready` so it
-can't generate documents on incomplete data.)
+Before generating documents, have the founder verify the exact company name (including suffix)
+themselves at the [Delaware name availability search](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx)
+— **Corply never verifies availability itself, and you must never state or imply that a name
+is available.** Call `save_application(companyId, data)` — send the whole payload when you can,
+but incremental saves are safe too: they **deep-merge** over what's stored, so saving one more
+field never wipes the founders/ownership/roles you saved earlier. Then
+`validate_application(formationId)` — it returns what's missing (it does NOT check Delaware name
+availability). Fix gaps and re-validate until `ready`. (If the application later becomes
+incomplete, `validate_application` demotes it back out of `ready` so it can't generate documents
+on incomplete data.)
 
 ### 3. Generate + review
 Call `generate_documents(formationId)`. Then call `request_signature(formationId)` — it returns the
