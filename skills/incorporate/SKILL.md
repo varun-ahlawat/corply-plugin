@@ -89,9 +89,10 @@ than creating a new charge.
 ### 5. Sign — the one consent ceremony, behind a MANDATORY permission gate
 
 **The one consent ceremony.** Once the fee is paid and `request_signature` has returned the review
-links, present the founder EVERY document they must sign — all four company documents (Certificate
-of Incorporation, Bylaws, Action of Incorporator, Initial Board Consent) plus one Restricted Stock
-Purchase Agreement per founder (more per-founder documents will follow) — each as a markdown
+links, present the founder EVERY document they must sign — the four company documents (Certificate
+of Incorporation, Bylaws, Action of Incorporator, Initial Board Consent), one Restricted Stock
+Purchase Agreement per founder, and one Section 83(b) Election per founder electing 83(b) — plus
+the IRS SS-4 preparation sheet (unsigned — listed for review, not signature) — each as a markdown
 hyperlink to its review link. Then ask, in these exact words:
 
 > Have you reviewed every single document? Although the documents are standardized, I suggest you still read them.

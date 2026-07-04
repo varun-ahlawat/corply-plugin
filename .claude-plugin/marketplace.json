@@ -6,7 +6,7 @@
     {
       "name": "corply",
       "description": "Your startup's AI general counsel: Delaware C-corp incorporation, end-to-end, from Claude Code.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "source": "./",
       "author": { "name": "Corply", "email": "founders@corply.dev" }
     }
