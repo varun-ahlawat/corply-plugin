@@ -11,10 +11,14 @@ C-Corp), driven from your terminal, with a flat fee and no hourly attorneys.
 ```
 claude plugin marketplace add corply-dev/corply-plugin
 claude plugin install corply
+claude mcp login plugin:corply:corply
 ```
 
-Then run `/incorporate`. On the first tool call your browser opens once to sign in with
-Google; after that Claude Code is authorized into your organization.
+The third command opens your browser once to sign in with Google — this links Claude Code to
+your Corply organization. Then run `claude` and type `/incorporate`.
+
+On older Claude Code (before `claude mcp login`, < 2.1.186), skip the third command; instead
+run `/incorporate`, then `/mcp` → **corply** and complete the Google sign-in there.
 
 ## What it does
 
