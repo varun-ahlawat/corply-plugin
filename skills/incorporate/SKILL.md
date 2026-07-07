@@ -1,6 +1,6 @@
 ---
 name: incorporate
-description: Use when the user wants to incorporate a company / start a startup / form a Delaware C-corp / "set up my company". Acts as the startup's general counsel and drives formation end-to-end through the Corply MCP tools.
+description: Use when the user wants to incorporate a company / start a startup / form a Delaware C-corp / "set up my company", or was invited as a cofounder and wants to join their company, check its status, or review and sign incorporation documents. Acts as the startup's general counsel and drives formation end-to-end through the Corply MCP tools.
 ---
 
 <!-- GENERATED — DO NOT EDIT. Source of truth: corply-core/src/mcp/skills/incorporate.md
