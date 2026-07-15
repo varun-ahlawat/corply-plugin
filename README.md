@@ -1,73 +1,95 @@
-# Corply — incorporate a Delaware C-Corp from Claude Code
+# Corply — your corporate operating partner
 
-Corply is an autonomous incorporation agent for startup founders. Install the plugin, run
-`/incorporate`, and form a **Delaware C-Corp end-to-end** — guided application, generated
-legal documents, cofounder e-signature, and a human-reviewed Delaware filing — without
-leaving Claude Code. Same outcome as Stripe Atlas or Clerky (a venture-ready Delaware
-C-Corp), driven from your terminal, with a flat fee and no hourly attorneys.
+Corply helps founders form and run a U.S. startup from their AI agent. Speak normally: Corply starts
+from canonical company state, recommends a standard choice with a short business reason, completes
+the available action, and refreshes the state before reporting the result.
+
+Corply supports Delaware C-corporation formation and ongoing work across governance, equity,
+deadlines, good standing, hiring, banking, payments, financing, and evidence for work completed
+elsewhere. Corply is not a law firm and does not provide legal, tax, accounting, or immigration
+advice.
 
 ## Install
 
-```
+### Claude Code
+
+```bash
 claude plugin marketplace add corply-dev/corply-plugin
-claude plugin install corply
+claude plugin install corply@corply
 claude mcp login plugin:corply:corply
 ```
 
-The third command opens your browser once to sign in with Google — this links Claude Code to
-your Corply organization. Then run `claude` and type `/incorporate`.
+The login command opens a browser so you can connect your Corply organization. On Claude Code
+versions before `claude mcp login`, open `/mcp`, choose **corply**, and complete sign-in.
 
-On older Claude Code (before `claude mcp login`, < 2.1.186), skip the third command; instead
-run `/incorporate`, then `/mcp` → **corply** and complete the Google sign-in there.
+### Codex or ChatGPT Work
 
-## What it does
+- In Codex CLI, add `corply-dev/corply-plugin` as a plugin marketplace, open `/plugins`, and install
+  Corply.
+- In the Codex or ChatGPT desktop app, open **Plugins**, install Corply, and choose **Connect**.
+- In ChatGPT Work on the web, open **Work** → **Plugins**, install Corply, and connect it.
 
-- **Guided application** — the agent gathers company name, founders, equity split, vesting,
-  83(b) election, and EIN details in one conversational pass, and explains standard choices.
-- **Legal documents** — Certificate of Incorporation, Bylaws, Action of Incorporator, and
-  Board Consent, generated from your answers.
-- **Conversational e-signature** — each signer reviews the PDFs via a magic link and signs
-  from their own Claude Code under a binding **ESIGN/UETA** audit trail. The only thing that
-  happens on the web is reading the PDF.
-- **Cofounders** — invite them by email; they install the same plugin, review, sign, and land
-  in the same organization automatically.
-- **Human-reviewed filing** — Corply's team reviews every Delaware submission before it is
-  filed. Nothing is auto-filed.
-- **Post-incorporation records** — approvals, documents, deadlines, and company context stay
-  in one place after formation.
+Start a new task after installation or reconnection so the session loads the current skill and tools.
 
-## Who it's for
+### Cursor
 
-- Founders who want a venture-ready structure without guessing.
-- Technical founders who would rather run one command and chat to claude code than use web portals.
-- First-time founders who would have many questions and doesn't want to minimize paying attorney fees.
-- Teams with International / non-U.S. cofounder(s), incorporating in U.S.
+Corply includes native Cursor packaging. In Cursor 2.5 or later, run `/add-plugin`, find **Corply**,
+and install it from the Cursor Marketplace. Connect Corply when prompted.
 
-## FAQ
+## Just ask
 
-- **Is this a Stripe Atlas / Clerky alternative?** Yes — same outcome (a venture-ready
-  Delaware C-Corp with EIN, founder stock, and 83(b) workflow), but driven from Claude Code
-  instead of a web portal.
-- **Does it file with Delaware automatically?** No. Every submission is human-reviewed
-  before filing.
-- **Do all cofounders have to sign?** Yes — each cofounder signs from their own Claude Code
-  with a full audit trail.
-- **What does it cost?** A flat fee, no hourly billing. Details at [corply.dev](https://corply.dev).
-- **Is Corply a law firm?** No. Corply prepares documents and filings and does not provide
-  legal advice.
+There are no Corply slash commands to learn. The single implicit skill handles both formation and
+existing-company work. For example:
 
-## How this repo works
+- “Incorporate my startup.”
+- “Where is our formation blocked?”
+- “What does my company need next?”
+- “We already completed this filing elsewhere—record the evidence.”
+- “Can we issue equity to our first engineer?”
 
-This repo is **just the plugin** — a thin client (a slash command, a skill, and an
-`.mcp.json` pointing at Corply's hosted MCP server at `https://corply.dev/mcp`). No company
-data, backend code, or credentials live here. The server exposes the incorporation tool
-surface (application, validation, document generation, e-signature, invites, formation
-status, and org memory) over the Model Context Protocol, so any MCP-capable agent can use
-Corply; Claude Code with this plugin is the first-class experience.
+## How Corply works
+
+1. **State first** — reads the current company briefing instead of restarting intake or relying on
+   chat memory.
+2. **Decisive recommendation** — gives the standard product choice and a concise first-principles
+   reason when a decision is missing.
+3. **Canonical action** — uses the action available for the current company state and asks only for
+   the fact that changes what happens next.
+4. **Focused confirmation** — pauses only before immutable document generation, payments,
+   signatures or certifications, invitations, messages or other external sends, filings or
+   government or provider submissions, access grants, and destructive cap-table replacement.
+5. **State refresh** — verifies the canonical outcome after every change and surfaces only critical
+   deadlines or blockers after completing the requested goal.
+
+## Formation
+
+Corply guides the founder from a persisted application through standard venture-startup choices,
+document generation, payment, signer-specific review and consent, cofounder coordination, and a
+human-reviewed Delaware filing handoff. Corply never signs for an absent founder, never confuses a
+submission with acceptance, and reports formation only after canonical state contains Delaware's
+accepted result.
+
+## Existing companies
+
+Corply prioritizes the work that unlocks or protects revenue, good standing, equity, hiring,
+banking, payments, financing, and transaction readiness. Recurring work remains recurring; an empty
+frontier means steady state until the next returned check, not permanent completion or a universal
+compliance guarantee.
+
+Work completed outside Corply is respected. A founder assertion, uploaded evidence, pending review,
+and verified company state remain distinct so diligence records are useful rather than merely tidy.
+
+## This repository
+
+This public repository is a thin plugin bundle:
+
+- one implicit skill at `skills/corply/` with seven task-specific public references;
+- Claude, Codex, and Cursor plugin manifests;
+- MCP configuration for Corply's hosted server at `https://corply.dev/mcp`;
+- MCP Registry metadata.
+
+It contains no company data, credentials, private rule catalog, backend code, or private decision
+logic.
 
 More: [corply.dev](https://corply.dev) · [llms.txt](https://corply.dev/llms.txt) ·
 [Security](https://corply.dev/security) · [Support](https://corply.dev/support)
-
----
-
-**Corply is operated by 0Lumen Labs Corp. Corply is not a law firm and does not provide legal advice.**
