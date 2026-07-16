@@ -12,10 +12,10 @@ never create a duplicate application or replay a completed stage because the con
 2. **Reversible application work.** Save explicit answers and validate until the server says the
    application is ready. Reversible saves do not need a separate confirmation.
 3. **Name check.** Read [company-naming.md](company-naming.md) when the founder needs help choosing
-   or replacing a name. Corply does not establish Delaware name availability. Before immutable
-   document generation, have the founder verify the exact name and suffix through the authoritative
-   Delaware Name Availability Search. Never state that the name is available unless the
-   authoritative result says so.
+   or replacing a name. Call `check_company_names` with the exact saved legal name and up to five
+   agent-created alternatives in the same call. Use its `true`, `false`, and `null` results directly.
+   A `false` selected name must be replaced and saved before checking again; retry a `null` result.
+   Continue only after the currently saved selected name returns `true`.
 4. **Immutable packet.** Summarize the frozen inputs and obtain fresh confirmation under
    [action-protocol.md](action-protocol.md). Generate only through the current canonical action,
    then summarize the packet Corply actually returned. Do not invent documents or review links.

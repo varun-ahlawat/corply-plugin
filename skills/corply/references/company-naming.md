@@ -26,18 +26,20 @@ variant before accepting a confusing spelling. Check domains live through
 never infer availability from memory. Buying or registering a domain is an external purchase and
 requires fresh confirmation under [action-protocol.md](action-protocol.md).
 
-## Clear the legal name
+## Check the legal name
 
-For each serious finalist:
+Once the founder has selected a complete legal name:
 
-- Check the exact base name, entity kind, and corporate ending through Delaware's
-  [Name Availability Search](https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx).
-- Do not use Delaware's Business Entity Search as an availability decision. It includes inactive
-  entities and can miss names that are unavailable for other reasons.
-- Do not scrape, automate, or attempt to bypass the state search. If Corply lacks an authorized
-  availability action, have the founder complete the official check.
-- Say `state-confirmed available as of [time]` only after a successful authoritative result. Call
-  third-party or index results `preliminary` or `likely clear`.
+- Build up to five strong alternatives when useful. Include the founder's chosen corporate ending
+  in every complete name.
+- Call `check_company_names` once with the saved `formationId`, the exact selected name, and those
+  alternatives in recommendation order.
+- Preserve the returned order and use every returned value directly: `true` means the name passed,
+  `false` means it is unavailable, and `null` means that individual check failed and can be retried.
+- Return every checked name and its result. If the selected name is `false`, help the founder choose
+  and save another returned name, then check that exact saved name before generating documents.
+- Do not send the founder through a separate manual pre-document name check. Corply operations makes
+  the final Delaware portal decision immediately before filing.
 - Keep entity-name availability separate from trademark clearance, domain availability, and naming
   rules in states where the company may later qualify to do business.
 
@@ -45,7 +47,3 @@ Use an approved corporate ending for a Delaware corporation. Avoid regulated or 
 such as `bank` or `trust` unless the briefing exposes an approved path or a qualified professional
 has cleared the issue. Delaware may still reject a name that is misleading, abusive, or otherwise
 noncompliant even when a search reports it available.
-
-Do not reserve a name by default when the founder is ready to file promptly. Reservation adds cost
-and process; offer it only when a meaningful delay before filing creates a real risk. Reservation,
-domain purchase, and filing remain separate consequential actions.

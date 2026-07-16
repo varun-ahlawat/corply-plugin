@@ -8,6 +8,7 @@ the founder moving: do not ask for permission to read, advise, or make an ordina
 Proceed when the action is in scope and Corply exposes it:
 
 - reads, briefings, status checks, and recommendations;
+- company-name availability checks requested as part of the current formation;
 - reversible application or company-fact saves;
 - recording a fact the founder explicitly supplied or confirmed;
 - evidence upload and evidence-claim submission;

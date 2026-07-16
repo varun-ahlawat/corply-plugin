@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC_URL = "https://corply.dev/mcp";
 const LIVE_URL = process.env.CORPLY_MCP_URL || PUBLIC_URL;
-const EXPECTED_VERSION = "0.4.0";
+const EXPECTED_VERSION = "0.4.1";
 const errors = [];
 
 const REQUIRED_PUBLIC_TOOLS = [
@@ -15,6 +15,7 @@ const REQUIRED_PUBLIC_TOOLS = [
   "adopt_existing_company",
   "save_application",
   "validate_application",
+  "check_company_names",
   "generate_documents",
   "request_payment",
   "request_signature",
@@ -110,11 +111,12 @@ checkEqual("Corply skill dependency URL count", yamlUrls.length, 1);
 checkEqual("Corply skill dependency URL", yamlUrls[0], PUBLIC_URL);
 
 try {
-  await rpc("initialize", {
+  const initialized = await rpc("initialize", {
     protocolVersion: "2024-11-05",
     capabilities: {},
     clientInfo: { name: "corply-plugin-sync-check", version: EXPECTED_VERSION },
   });
+  checkEqual("live MCP version", initialized?.serverInfo?.version, EXPECTED_VERSION);
   const [{ tools = [] }, { prompts = [] }] = await Promise.all([
     rpc("tools/list"),
     rpc("prompts/list"),
@@ -143,5 +145,5 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  console.log(`Corply plugin 0.4.0 matches the deployed MCP inventory at ${LIVE_URL}.`);
+  console.log(`Corply plugin ${EXPECTED_VERSION} matches the deployed MCP inventory at ${LIVE_URL}.`);
 }
