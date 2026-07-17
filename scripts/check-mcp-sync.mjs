@@ -7,7 +7,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC_URL = "https://corply.dev/mcp";
 const LIVE_URL = process.env.CORPLY_MCP_URL || PUBLIC_URL;
-const EXPECTED_VERSION = "0.4.2";
+const EXPECTED_PLUGIN_VERSION = "0.4.3";
+const EXPECTED_MCP_VERSION = "0.4.2";
 const errors = [];
 
 const REQUIRED_PUBLIC_TOOLS = [
@@ -89,6 +90,7 @@ const skill = readText("skills/corply/SKILL.md").replace(/\s+/g, " ");
 const formation = readText("skills/corply/references/formation.md");
 const normalizedFormation = formation.replace(/\s+/g, " ");
 const authentication = readText("skills/corply/references/authentication.md");
+const normalizedAuthentication = authentication.toLowerCase().replace(/\s+/g, " ");
 
 checkEqual(".mcp.json corply type", mcp.mcpServers?.corply?.type, "http");
 checkEqual(".mcp.json corply URL", mcp.mcpServers?.corply?.url, PUBLIC_URL);
@@ -98,13 +100,13 @@ for (const [name, manifest] of [
   ["Claude manifest", claude],
   ["Cursor manifest", cursor],
 ]) {
-  checkEqual(`${name} version`, manifest.version, EXPECTED_VERSION);
+  checkEqual(`${name} version`, manifest.version, EXPECTED_PLUGIN_VERSION);
   checkEqual(`${name} MCP config path`, manifest.mcpServers, "./.mcp.json");
 }
 
 const claudeEntry = claudeMarketplace.plugins?.find((plugin) => plugin.name === "corply");
-checkEqual("Claude marketplace version", claudeEntry?.version, EXPECTED_VERSION);
-checkEqual("MCP Registry version", server.version, EXPECTED_VERSION);
+checkEqual("Claude marketplace version", claudeEntry?.version, EXPECTED_PLUGIN_VERSION);
+checkEqual("MCP Registry version", server.version, EXPECTED_MCP_VERSION);
 
 const remoteUrls = Array.isArray(server.remotes) ? server.remotes.map((remote) => remote.url) : [];
 checkEqual("MCP Registry remote count", remoteUrls.length, 1);
@@ -122,6 +124,14 @@ if (!normalizedFormation.includes("never block document generation") || formatio
 if (!authentication.includes("TERMS_ACCEPTANCE_REQUIRED")) {
   errors.push("authentication guidance is missing current-terms recovery");
 }
+if (
+  !normalizedAuthentication.includes("immediately run this command yourself") ||
+  !normalizedAuthentication.includes("claude mcp login plugin:corply:corply") ||
+  !normalizedAuthentication.includes("background execution") ||
+  !normalizedAuthentication.includes("do not ask the founder to type the command")
+) {
+  errors.push("authentication guidance is missing automatic Claude Code login recovery");
+}
 
 const agentYaml = readText("skills/corply/agents/openai.yaml");
 const yamlUrls = agentYaml.match(/https:\/\/[^\s"']+/g) ?? [];
@@ -132,9 +142,9 @@ try {
   const initialized = await rpc("initialize", {
     protocolVersion: "2024-11-05",
     capabilities: {},
-    clientInfo: { name: "corply-plugin-sync-check", version: EXPECTED_VERSION },
+    clientInfo: { name: "corply-plugin-sync-check", version: EXPECTED_PLUGIN_VERSION },
   });
-  checkEqual("live MCP version", initialized?.serverInfo?.version, EXPECTED_VERSION);
+  checkEqual("live MCP version", initialized?.serverInfo?.version, EXPECTED_MCP_VERSION);
   const [{ tools = [] }, { prompts = [] }] = await Promise.all([
     rpc("tools/list"),
     rpc("prompts/list"),
@@ -163,5 +173,7 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  console.log(`Corply plugin ${EXPECTED_VERSION} matches the deployed MCP inventory at ${LIVE_URL}.`);
+  console.log(
+    `Corply plugin ${EXPECTED_PLUGIN_VERSION} matches MCP ${EXPECTED_MCP_VERSION} at ${LIVE_URL}.`,
+  );
 }

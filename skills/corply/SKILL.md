@@ -33,6 +33,11 @@ of Corply's internal workflow.
 8. Finish the requested goal when possible. Then surface only a critical deadline, blocker, or
    decision the founder can act on now.
 
+When Corply authentication is missing, invalid, or expired, briefly tell the founder and immediately
+perform the surface-specific recovery in [authentication.md](references/authentication.md). Do not
+ask the founder to type a command or ask conversational permission before attempting recovery; let
+the host display its normal command-approval UI when required.
+
 Treat an assertion, uploaded evidence, a pending review, and canonical company state as four
 different things. Never convert one into another merely to make the plan look complete.
 
@@ -52,7 +57,7 @@ different things. Never convert one into another merely to make the plan look co
   work was done elsewhere, supplies a document, or needs a claim reviewed.
 - Read [action-protocol.md](references/action-protocol.md) before any write or external action.
 - Read [authentication.md](references/authentication.md) only when Corply tools are missing or an
-  authentication error blocks progress.
+  authentication error blocks progress, then perform its recovery rather than delegating it.
 
 Keep URLs as Markdown links. Never expose credentials, private backend URLs, private rule logic, or
 temporary signed artifact URLs.
