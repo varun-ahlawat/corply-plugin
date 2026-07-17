@@ -1,0 +1,45 @@
+{
+  "name": "corply",
+  "version": "0.4.3",
+  "description": "A state-first corporate operating partner for forming and running a U.S. startup through Corply.",
+  "author": {
+    "name": "Corply",
+    "email": "founders@corply.dev",
+    "url": "https://corply.dev"
+  },
+  "homepage": "https://corply.dev",
+  "repository": "https://github.com/corply-dev/corply-plugin",
+  "license": "MIT",
+  "keywords": [
+    "incorporation",
+    "startup",
+    "operations",
+    "governance",
+    "equity",
+    "delaware",
+    "c-corp",
+    "compliance"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Corply",
+    "shortDescription": "Your state-first corporate operating partner.",
+    "longDescription": "Talk normally with Corply to form a Delaware C corporation or run an existing U.S. startup. Corply starts from canonical company state, recommends standard choices with clear reasons, completes available actions, and keeps evidence and pending review distinct from verified company state. Corply is not a law firm.",
+    "developerName": "Corply",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://corply.dev",
+    "privacyPolicyURL": "https://corply.dev/privacy",
+    "termsOfServiceURL": "https://corply.dev/terms",
+    "defaultPrompt": [
+      "Incorporate my startup with Corply.",
+      "What does my company need next?",
+      "I completed a company task elsewhere. Help me record it."
+    ],
+    "brandColor": "#10A37F"
+  }
+}

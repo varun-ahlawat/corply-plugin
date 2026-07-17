@@ -1,9 +1,10 @@
 {
   "name": "corply",
-  "description": "Corply — your startup's AI general counsel. Incorporate a Delaware C-corp end-to-end from Claude Code: guided application, document generation, conversational e-signature, and filing handoff.",
-  "version": "0.1.0",
+  "description": "A state-first corporate operating partner for forming and running a U.S. startup through natural conversation.",
+  "version": "0.4.3",
   "author": { "name": "Corply", "email": "founders@corply.dev" },
   "homepage": "https://corply.dev",
   "license": "MIT",
-  "keywords": ["incorporation", "legal", "startup", "delaware", "general-counsel", "c-corp"]
+  "keywords": ["incorporation", "startup", "operations", "governance", "equity", "delaware", "c-corp", "compliance"],
+  "mcpServers": "./.mcp.json"
 }
