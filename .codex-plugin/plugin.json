@@ -40,6 +40,8 @@
       "What does my company need next?",
       "I completed a company task elsewhere. Help me record it."
     ],
-    "brandColor": "#10A37F"
+    "brandColor": "#10A37F",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.png"
   }
 }
